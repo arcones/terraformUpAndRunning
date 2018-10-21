@@ -1,14 +1,17 @@
+terraform {
+  backend "s3" {
+    bucket  = "teraform-up-and-running-arcones-state"
+    region  = "eu-central-1"
+    key     = "services/webserver-cluster/terraform.tfstate"
+    encrypt = true
+  }
+}
+
 provider "aws" {
   region = "eu-central-1"
 }
 
 data "aws_availability_zones" "all" {}
-
-variable "server_port" {
-  type        = "string"
-  description = "The port the server will use for HTTP requests"
-  default     = "8080"
-}
 
 ## EC2 AUTOSCALING GROUP CONFIGURATION
 
@@ -98,10 +101,4 @@ resource "aws_security_group" "security_group" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-}
-
-## OUTPUTS
-
-output "elb_dns_name" {
-  value = "${aws_elb.load_balancer.dns_name}"
 }

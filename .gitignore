@@ -2,3 +2,4 @@ credentials.csv
 .terraform
 *.tfstate
 *.tfstate.backup
+*.sublime*
