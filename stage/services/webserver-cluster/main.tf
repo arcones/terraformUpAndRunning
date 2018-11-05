@@ -2,7 +2,7 @@ terraform {
   backend "s3" {
     bucket  = "teraform-up-and-running-arcones-state"
     region  = "eu-central-1"
-    key     = "services/webserver-cluster/terraform.tfstate"
+    key     = "stage/services/webserver-cluster/terraform.tfstate"
     encrypt = true
   }
 }
@@ -13,6 +13,16 @@ provider "aws" {
 
 data "aws_availability_zones" "all" {}
 
+data "terraform_remote_state" "db" {
+  backend = "s3"
+
+  config {
+    bucket = "teraform-up-and-running-arcones-state"
+    key    = "stage/services/data-stores/mysql/terraform.tfstate"
+    region = "eu-central-1"
+  }
+}
+
 ## EC2 AUTOSCALING GROUP CONFIGURATION
 
 resource "aws_launch_configuration" "instances" {
@@ -22,7 +32,9 @@ resource "aws_launch_configuration" "instances" {
 
   user_data = <<-EOF
                   #!/bin/bash
-                  echo "Hello arcones" > index.html
+                  echo "Hello arcones" >> index.html
+                  echo "${data.terraform_remote_state.db.address}" >> index.html
+                  echo "${data.terraform_remote_state.db.port}" >> index.html
                   nohup busybox httpd -f -p ${var.server_port} &
                   EOF
 
