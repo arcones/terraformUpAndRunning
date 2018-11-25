@@ -1,5 +1,6 @@
 provider "aws" {
-  region = "eu-central-1"
+  region  = "eu-central-1"
+  profile = "explorationAccount"
 }
 
 data "aws_availability_zones" "all" {}
