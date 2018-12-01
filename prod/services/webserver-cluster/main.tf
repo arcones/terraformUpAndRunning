@@ -4,5 +4,5 @@ provider "aws" {
 
 module "webserver_cluster" {
   source = "../../../modules/services/webserver-cluster"
-  environment = "stage"
+  environment = "prod"
 }

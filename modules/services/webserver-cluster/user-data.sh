@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cat > index.html << EOF
 <h1>Hello, I am Marta Arcones</h1><br>
 <h2>Software Engineer</h2><br>

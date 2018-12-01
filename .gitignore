@@ -4,3 +4,4 @@ credentials.csv
 *.tfstate.backup
 *.sublime*
 .idea
+.terraform.tfstate.lock.info
