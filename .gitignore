@@ -3,3 +3,4 @@ credentials.csv
 *.tfstate
 *.tfstate.backup
 *.sublime*
+.idea
