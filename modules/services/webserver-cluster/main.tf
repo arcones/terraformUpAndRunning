@@ -5,7 +5,7 @@ data "terraform_remote_state" "db" {
 
   config {
     bucket = "teraform-up-and-running-arcones-state"
-    key    = "${var.environment}/services/data-stores/mysql/terraform.tfstate"
+    key    = "stage/services/data-stores/mysql/terraform.tfstate"
     region = "eu-central-1"
   }
 }
@@ -54,7 +54,7 @@ resource "aws_autoscaling_group" "scaling_group" {
 ## ELASTIC LOAD BALANCER
 
 resource "aws_elb" "load_balancer" {
-  name               = "myELB-${var.environment}"
+  name               = "myELB-${var.cluster_name}"
   availability_zones = ["${data.aws_availability_zones.all.names}"]
   security_groups    = ["${aws_security_group.elb_security_group.id}"]
 
@@ -75,7 +75,7 @@ resource "aws_elb" "load_balancer" {
 }
 
 resource "aws_security_group" "elb_security_group" {
-  name = "myELBSecurityGroup-${var.environment}"
+  name = "${var.cluster_name}"
 
   ingress {
     from_port   = 80
@@ -95,7 +95,7 @@ resource "aws_security_group" "elb_security_group" {
 ## SECURITY GROUP
 
 resource "aws_security_group" "security_group" {
-  name        = "security-group-${var.environment}"
+  name        = "security-group-${var.cluster_name}"
   description = "Security group for AWS EC2 instance"
 
   ingress {
