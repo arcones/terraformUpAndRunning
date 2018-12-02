@@ -1,11 +1,3 @@
-terraform {
-  backend "s3" {
-    bucket  = "teraform-up-and-running-arcones-state"
-    region  = "eu-central-1"
-    encrypt = true
-  }
-}
-
 data "aws_availability_zones" "all" {}
 
 data "terraform_remote_state" "db" {
