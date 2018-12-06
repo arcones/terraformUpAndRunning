@@ -8,8 +8,8 @@ terraform {
 }
 
 provider "aws" {
-  profile  = "explorationAccount"
-  region   = "eu-central-1"
+  profile = "explorationAccount"
+  region  = "eu-central-1"
 }
 
 resource "aws_s3_bucket" "terraform_state" {

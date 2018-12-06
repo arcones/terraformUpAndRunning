@@ -1,16 +1,3 @@
-terraform {
-  backend "s3" {
-    bucket  = "teraform-up-and-running-arcones-state"
-    region  = "eu-central-1"
-    encrypt = true
-    key     = "stage/services/webserver-cluster/terraform.tfstate"
-  }
-}
-
-provider "aws" {
-  region = "eu-central-1"
-}
-
 module "webserver_cluster" {
   source                 = "../../../modules/services/webserver-cluster"
   cluster_name           = "webservers-stage"
@@ -22,11 +9,11 @@ module "webserver_cluster" {
 }
 
 resource "aws_security_group_rule" "allow_testing_inbound_elb" {
-  type = "ingress"
+  type              = "ingress"
   security_group_id = "${module.webserver_cluster.elb_security_group_id}"
 
-  from_port = 12345
-  to_port = 12345
-  protocol = "tcp"
+  from_port   = 12345
+  to_port     = 12345
+  protocol    = "tcp"
   cidr_blocks = ["0.0.0.0/0"]
 }
