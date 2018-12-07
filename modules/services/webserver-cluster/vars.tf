@@ -26,3 +26,5 @@ variable "min_size" {
 variable "max_size" {
   description = "The maximum number of EC2 instances in the auto scaling group"
 }
+
+variable "key_pair_name" {}

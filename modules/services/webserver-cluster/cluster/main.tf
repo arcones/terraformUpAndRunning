@@ -18,10 +18,11 @@ data "template_file" "user_data" {
   }
 }
 
-resource "aws_launch_configuration" "instances" {
+resource "aws_launch_configuration" "ubuntu" {
   image_id        = "ami-0fad7824ed21125b1"
   instance_type   = "${var.instance_type}"
   security_groups = ["${aws_security_group.security_group_ec2.id}"]
+  key_name        = "${var.key_pair_name}"
 
   user_data = "${data.template_file.user_data.rendered}"
 
@@ -31,7 +32,7 @@ resource "aws_launch_configuration" "instances" {
 }
 
 resource "aws_autoscaling_group" "scaling_group" {
-  launch_configuration = "${aws_launch_configuration.instances.id}"
+  launch_configuration = "${aws_launch_configuration.ubuntu.id}"
   availability_zones   = ["${var.availability_zones_names}"]
 
   load_balancers    = ["${var.elb_id}"]
@@ -40,11 +41,13 @@ resource "aws_autoscaling_group" "scaling_group" {
   min_size = "${var.min_size}"
   max_size = "${var.max_size}"
 
-  tags {
+  tags = {
     key                 = "Name"
     value               = "terraformUpAndRunning-${var.cluster_name}"
     propagate_at_launch = true
   }
+
+  wait_for_capacity_timeout = "5m"
 }
 
 resource "aws_security_group" "security_group_ec2" {
@@ -52,8 +55,8 @@ resource "aws_security_group" "security_group_ec2" {
   description = "Security group for AWS EC2 instance"
 }
 
-resource "aws_security_group_rule" "allow_all_outbound" {
-  type              = "egress"
+resource "aws_security_group_rule" "allow_server_http_inbound" {
+  type              = "ingress"
   security_group_id = "${aws_security_group.security_group_ec2.id}"
 
   from_port   = "${var.server_port}"

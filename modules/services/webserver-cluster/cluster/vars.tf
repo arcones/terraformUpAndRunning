@@ -6,7 +6,7 @@ variable "elb_id" {}
 variable "cluster_name" {}
 variable "db_remote_state_bucket" {}
 variable "db_remote_state_key" {}
-
+variable "key_pair_name" {}
 variable "availability_zones_names" {
   type = "list"
 }

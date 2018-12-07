@@ -10,6 +10,7 @@ module "cluster" {
   min_size                 = "${var.min_size}"
   max_size                 = "${var.max_size}"
   elb_id                   = "${module.elb.id}"
+  key_pair_name            = "${var.key_pair_name}"
   availability_zones_names = "${data.aws_availability_zones.all.names}"
 }
 
