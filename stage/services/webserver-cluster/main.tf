@@ -6,7 +6,7 @@ module "webserver_cluster" {
   instance_type          = "t2.micro"
   min_size               = 2
   max_size               = 2
-  key_pair_name = "${aws_key_pair.ec2_ssh_key.key_name}"
+  key_pair_name          = "${aws_key_pair.ec2_ssh_key.key_name}"
 }
 
 resource "aws_security_group_rule" "allow_testing_inbound_elb" {
@@ -20,28 +20,26 @@ resource "aws_security_group_rule" "allow_testing_inbound_elb" {
 }
 
 resource "aws_key_pair" "ec2_ssh_key" {
-  key_name = "slimbook"
+  key_name   = "slimbook"
   public_key = "${file("~/.ssh/id_rsa.pub")}"
 }
 
 resource "aws_security_group_rule" "ssh_ec2_inbound" {
-  type = "ingress"
+  type              = "ingress"
   security_group_id = "${module.webserver_cluster.ec2_security_group_id}"
 
-  from_port       = 22
-  to_port         = 22
-  protocol        = "tcp"
-  cidr_blocks     = ["77.228.112.250/32"]
+  from_port   = 22
+  to_port     = 22
+  protocol    = "tcp"
+  cidr_blocks = ["77.228.112.250/32"]
 }
 
 resource "aws_security_group_rule" "ssh_ec2_outbound" {
-  type = "egress"
+  type              = "egress"
   security_group_id = "${module.webserver_cluster.ec2_security_group_id}"
 
-  from_port = 22
-  to_port = 22
-  protocol = "tcp"
+  from_port   = 22
+  to_port     = 22
+  protocol    = "tcp"
   cidr_blocks = ["0.0.0.0/0"]
 }
-
-
