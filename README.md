@@ -21,4 +21,4 @@ terraform apply
 ``` 
 
 ## Discontinued
-From the end of chapter 4 beyond, the book recommends to split in several repositories. So check out my github account for those./
+From the end of chapter 4 beyond, the book recommends to split in several repositories. So check out my github account for those.
